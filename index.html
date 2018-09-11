@@ -8,6 +8,8 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
+    <!-- Font Awecsome CDN -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="assets/css/style.css">
   </head>
@@ -22,21 +24,24 @@
     </div>
     <!-- Main Content -->
     <div class="container">
-        <div class="row">
-            <div class="col">
+        <div class="row my-3">
+            <div class="col-9">
                 <div id="buttons">
 
                 </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-9">
-                <div id="gifs">
-
+            <div class="col-3">
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" placeholder="Search..." name="search">
+                    <div class="input-group-append">
+                        <button type="submit"><i class="fas fa-search"></i></button>
+                    </div>
                 </div>
             </div>
-            <div class="col-3">
-                <div id="search">
+        </div>
+        <div class="row">
+            <div class="col">
+                <div id="gifs">
 
                 </div>
             </div>
