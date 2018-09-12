@@ -14,7 +14,6 @@ var gifTastic = {
         }
     },
     generateGifs(buttonName){
-        var that = this;
         // Generates appropriate URL for AJAX 
         var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + buttonName + "+KPOP&api_key=10dpuSkxshqdLim7xp7FyDbgQPlJC3Vc&limit=" + numberDisplayed;
         $.ajax({
@@ -47,15 +46,12 @@ var gifTastic = {
                 // Display new div in gifs div
                 $("#gifs").append(newDiv);
             }
-            // Once the gifs are generated, then user can click or download image
-            that.clickImage();
-            that.downloadImage();
         })
     },
     clickButton(){
         var that = this;
         // Generates appropriate gifs according to button clicked
-        $(".gifButtons").on("click", function(){
+        $(document).on("click", ".gifButtons", function(){
             // Default number of gifs displayed is 10
             numberDisplayed = 10;
             // On the first click of the page, the add more gifs button is generated
@@ -75,7 +71,7 @@ var gifTastic = {
     },
     clickImage(){
         // Changes between static image and gif on click
-        $(".gifImage").on("click", function(){
+        $(document).on("click", ".gifImage", function(){
             if($(this).attr("status") === "static"){
                 // Replacing the part in the src that determines if image is static or gif
                 this.src = this.src.replace("200_s", "200");
@@ -99,13 +95,11 @@ var gifTastic = {
             $("#buttons").empty();
             // Creates the buttons again, this time including user's input
             that.createButtons();
-            // Runs the clickbutton method again, so new user button can be clicked
-            that.clickButton();
         });
     },
     addMoreGifs(){
         var that = this; 
-        $(".container").on("click", ".addMoreGifs", function(){
+        $(document).on("click", ".addMoreGifs", function(){
             // Once addmoregifs button is clicked, increase number of displayed gifs 
             numberDisplayed += 10;
             // Run generategifs method again using the new number of displayed
@@ -115,7 +109,7 @@ var gifTastic = {
     downloadImage(){
         // One click download of gif using download.js plugin 
         // Would have liked to use the download attribute in HTML5, but does not work with cross-origin files
-        $(".downloadButton").on("click", function(){
+        $(document).on("click", ".downloadButton", function(){
             download($(this).attr("href"));
         })
     }
@@ -124,6 +118,8 @@ var gifTastic = {
 $(document).ready(function(){
     gifTastic.createButtons();
     gifTastic.clickButton();
+    gifTastic.clickImage();
     gifTastic.collectInput();
     gifTastic.addMoreGifs();
+    gifTastic.downloadImage();
 })
