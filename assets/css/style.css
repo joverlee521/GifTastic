@@ -10,5 +10,26 @@ span {
     background-color: transparent;
     color: #00A4BC;
     margin: 0;
-    padding: 1rem 0;
+    padding: 1rem 0 0 0;
+}
+
+.downloadButton {
+    background-color: transparent;
+    color: #00A4BC;
+    border-color: transparent;
+}
+
+.downloadButton:hover {
+    cursor: pointer; 
+    background-color: #ffffff;
+    color: #000000; 
+}
+
+.gifImage {
+    border: 1px solid transparent;
+}
+
+.gifImage:hover {
+    cursor: pointer;
+    border: 1px solid #ffffff;
 }
