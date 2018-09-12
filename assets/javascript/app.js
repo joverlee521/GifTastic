@@ -19,7 +19,7 @@ var gifTastic = {
             }).then(function(result){
                 $("#gifs").empty();
                 for(var i = 0; i < result.data.length; i++){
-                    var gif = result.data[i].images.fixed_width_still.url;
+                    var gif = result.data[i].images.fixed_height_still.url;
                     var rating = result.data[i].rating.toUpperCase();
                     var imageRating = $("<span>");
                     imageRating.text("Rating: " + rating);
@@ -27,10 +27,8 @@ var gifTastic = {
                     newImage.addClass("m-1 gifImage");
                     newImage.attr({"value": i, "src": gif, "status": "static"});
                     var newDiv = $("<div>");
-                    newDiv.addClass("col-3 text-center")
-                    newDiv.append(newImage);
-                    newDiv.append("<br>");
-                    newDiv.append(imageRating);
+                    newDiv.addClass("col text-center")
+                    newDiv.append(newImage, "<br>", imageRating);
                     $("#gifs").append(newDiv);
                 }
                 that.clickImage();
@@ -40,11 +38,11 @@ var gifTastic = {
     clickImage(){
         $(".gifImage").on("click", function(){
             if($(this).attr("status") === "static"){
-                this.src = this.src.replace("200w_s", "200w");
+                this.src = this.src.replace("200_s", "200");
                 $(this).attr("status", "gif");
             }
             else{
-                this.src = this.src.replace("200w", "200w_s");
+                this.src = this.src.replace("200", "200_s");
                 $(this).attr("status", "static");
             }
         })
@@ -54,10 +52,9 @@ var gifTastic = {
         $("#submit").on("click", function(){
             var input = $("#search").val();
             $("#search").val("");
-            var newButton = $("<button>");
-            newButton.addClass("btn btn-outline-info m-1");
-            newButton.text(input);
-            $("#buttons").append(newButton);
+            topics.push(input);
+            $("#buttons").empty();
+            that.createButtons();
             that.clickButton();
         });
     }
