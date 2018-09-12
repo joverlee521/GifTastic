@@ -2,6 +2,7 @@ var topics = ["BigBang", "Super Junior", "Girl's Generation", "TVXQ", "BTS", "MA
 var numberDisplayed = 10;
 var firstClick = true; 
 var lastClicked;
+var player; 
 
 var gifTastic = {
     createButtons(){
@@ -13,6 +14,7 @@ var gifTastic = {
             $("#buttons").append(newButton);
         }
     },
+    // Uses GIPHY API to generate gifs 
     generateGifs(buttonName){
         // Generates appropriate URL for AJAX 
         var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + buttonName + "+KPOP&api_key=10dpuSkxshqdLim7xp7FyDbgQPlJC3Vc&limit=" + numberDisplayed;
@@ -48,6 +50,38 @@ var gifTastic = {
             }
         })
     },
+    // Uses YouTube DATA API to search for relevant YouTube Video
+    searchYouTube(buttonName){
+        var that = this;
+        var newURL = "https://www.googleapis.com/youtube/v3/search?part=snippet&q=" + buttonName + "+MV&type=video&videoEmbeddable=true&key=AIzaSyBUf7sZOA7CfTMYvlNTCUvn-U05WYjbh1Y";
+        $.ajax({
+            url: newURL,
+            method: "GET"
+        }).then(function(result){
+            var vidId = result.items[0].id.videoId;
+            // Empties youtube player div to allow new video to be embedded
+            $("#youtube-player").empty();
+            $("#youtube-player").append("<div id='player'>");
+            // Embeds video using videoID from search API
+            that.onYouTubeIframeAPIReady(vidId);
+        })
+    },
+    // Using YouTube iFrame API to embed video into webpage
+    onYouTubeIframeAPIReady(id) {
+        var that = this;
+        player = new YT.Player('player', {
+          height: '390',
+          width: '640',
+          videoId: id,
+          events: {
+            'onReady': that.onPlayerReady,
+          }
+        });
+    },
+    // Will play youtube video once the video is ready
+    onPlayerReady(event) {
+        event.target.playVideo();
+    },
     clickButton(){
         var that = this;
         // Generates appropriate gifs according to button clicked
@@ -66,6 +100,7 @@ var gifTastic = {
             lastClicked = $(this).text();
             // Runs the generategifs method using the text of button clicked
             that.generateGifs(lastClicked);   
+            that.searchYouTube(lastClicked);
         })
         
     },
