@@ -1,18 +1,20 @@
 var topics = ["Big Bang", "Super Junior", "Girl's Generation", "TVXQ", "BTS", "MAMAMOO", "EXO", "BAP", "BLACKPINK", "SHINee", "EXID", "AOA", "f(x)", "MBLAQ", "BlockB", "Epik High"];
+var numberDisplayed = 10;
+var firstClick = true; 
+var lastClicked;
 
 var gifTastic = {
     createButtons(){
         for(var i = 0; i < topics.length; i++){
             var newButton = $("<button>");
-            newButton.addClass("btn btn-outline-info m-1");
+            newButton.addClass("btn btn-outline-info m-1 gifButtons");
             newButton.text(topics[i]);
             $("#buttons").append(newButton);
         }
     },
-    clickButton(){
+    generateGifs(buttonName){
         var that = this;
-        $(".btn").on("click", function(){
-            var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + $(this).text() + "+KPOP&api_key=10dpuSkxshqdLim7xp7FyDbgQPlJC3Vc&limit=10";
+        var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + buttonName + "+KPOP&api_key=10dpuSkxshqdLim7xp7FyDbgQPlJC3Vc&limit=" + numberDisplayed;
             $.ajax({
                 url: queryURL,
                 method: "GET"
@@ -27,13 +29,28 @@ var gifTastic = {
                     newImage.addClass("m-1 gifImage");
                     newImage.attr({"value": i, "src": gif, "status": "static"});
                     var newDiv = $("<div>");
-                    newDiv.addClass("col text-center")
+                    newDiv.addClass("col text-center m-2")
                     newDiv.append(newImage, "<br>", imageRating);
                     $("#gifs").append(newDiv);
                 }
                 that.clickImage();
             })
+    },
+    clickButton(){
+        var that = this;
+        $(".gifButtons").on("click", function(){
+            numberDisplayed = 10;
+            if(firstClick){
+                var moreButton = $("<button>");
+                moreButton.addClass("btn btn-outline-info addMoreGifs");
+                moreButton.text("Add 10 more GIFs");
+                $(".input-group").after(moreButton);
+                firstClick = false; 
+            }
+            lastClicked = $(this).text();
+            that.generateGifs(lastClicked);   
         })
+        
     },
     clickImage(){
         $(".gifImage").on("click", function(){
@@ -57,6 +74,13 @@ var gifTastic = {
             that.createButtons();
             that.clickButton();
         });
+    },
+    addMoreGifs(){
+        var that = this; 
+        $(".container").on("click", ".addMoreGifs", function(){
+            numberDisplayed += 10;
+            that.generateGifs(lastClicked);
+        })
     }
 }
 
@@ -64,4 +88,5 @@ $(document).ready(function(){
     gifTastic.createButtons();
     gifTastic.clickButton();
     gifTastic.collectInput();
+    gifTastic.addMoreGifs();
 })

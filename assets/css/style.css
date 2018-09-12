@@ -1,0 +1,14 @@
+body {
+    background-image: url(../images/darkness.png);
+}
+
+span {
+    color: #ffffff;
+}
+
+.jumbo-custom {
+    background-color: transparent;
+    color: #00A4BC;
+    margin: 0;
+    padding: 1rem 0;
+}
