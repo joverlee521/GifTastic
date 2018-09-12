@@ -12,7 +12,7 @@ var gifTastic = {
     clickButton(){
         var that = this;
         $(".btn").on("click", function(){
-            var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + $(this).text() + "+kpop&api_key=10dpuSkxshqdLim7xp7FyDbgQPlJC3Vc&limit=10";
+            var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + $(this).text() + "+KPOP&api_key=10dpuSkxshqdLim7xp7FyDbgQPlJC3Vc&limit=10";
             $.ajax({
                 url: queryURL,
                 method: "GET"
