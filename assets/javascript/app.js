@@ -22,18 +22,23 @@ var gifTastic = {
                 $("#gifs").empty();
                 for(var i = 0; i < result.data.length; i++){
                     var gif = result.data[i].images.fixed_height_still.url;
+                    var downloadLink = result.data[i].images.original.url;
                     var rating = result.data[i].rating.toUpperCase();
-                    var imageRating = $("<span>");
-                    imageRating.text("Rating: " + rating);
+                    var imageRating = $("<span>").text("Rating: " + rating);
+                    var download = $("<button>");
+                    download.addClass("downloadButton");
+                    download.attr("href", downloadLink);
+                    download.html("<i class='fas fa-download'></i>");
                     var newImage = $("<img>");
                     newImage.addClass("m-1 gifImage");
                     newImage.attr({"value": i, "src": gif, "status": "static"});
                     var newDiv = $("<div>");
                     newDiv.addClass("col text-center m-2")
-                    newDiv.append(newImage, "<br>", imageRating);
+                    newDiv.append(newImage, "<br>", download, imageRating);
                     $("#gifs").append(newDiv);
                 }
                 that.clickImage();
+                that.downloadImage();
             })
     },
     clickButton(){
@@ -80,6 +85,11 @@ var gifTastic = {
         $(".container").on("click", ".addMoreGifs", function(){
             numberDisplayed += 10;
             that.generateGifs(lastClicked);
+        })
+    },
+    downloadImage(){
+        $(".downloadButton").on("click", function(){
+            download($(this).attr("href"));
         })
     }
 }
