@@ -15,7 +15,7 @@
   </head>
   <body>
     <!-- Jumbotron -->
-    <div class="jumbotron jumbotron-fluid">
+    <div class="jumbotron jumbotron-fluid py-1">
         <div class="container">
             <h1 class="display-4">GifTastic KPOP</h1>
             <p class="lead">Click on one of the buttons to generate 10 relevant GIFs!</p>
@@ -32,16 +32,16 @@
             </div>
             <div class="col-3">
                 <div class="input-group mb-3">
-                    <input type="text" class="form-control" placeholder="Search..." name="search">
+                    <input type="text" class="form-control" placeholder="Search..." id="search">
                     <div class="input-group-append">
-                        <button type="submit"><i class="fas fa-search"></i></button>
+                        <button id="submit"><i class="fas fa-search"></i></button>
                     </div>
                 </div>
             </div>
         </div>
         <div class="row">
             <div class="col">
-                <div id="gifs">
+                <div class="row" id="gifs">
 
                 </div>
             </div>
