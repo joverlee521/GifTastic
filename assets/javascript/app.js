@@ -173,12 +173,18 @@ var gifTastic = {
             url: newURL,
             method: "GET"
         }).then(function(result){
-            var vidId = result.items[0].id.videoId;
+            console.log(result);
             // Empties youtube player div to allow new video to be embedded
             $("#youtube-player").empty();
-            $("#youtube-player").append("<div id='player'>");
-            // Embeds video using videoID from search API
-            that.onYouTubeIframeAPIReady(vidId);
+            if(result.items.length === 0){
+                $("#youtube-player").append("<h2>No Video Available</h2>");
+            }
+            else{
+                var vidId = result.items[0].id.videoId;
+                $("#youtube-player").append("<div id='player'>");
+                // Embeds video using videoID from search API
+                that.onYouTubeIframeAPIReady(vidId);
+            }
         })
     },
     // Using YouTube iFrame API to embed video into webpage
