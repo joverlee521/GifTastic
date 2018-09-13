@@ -4,6 +4,7 @@ var firstClick = true;
 var lastClicked;
 var player; 
 var favorites = [];
+var firstFavoriteClick = true; 
 
 var gifTastic = {
     createButtons(){
@@ -45,7 +46,7 @@ var gifTastic = {
                 // Generates each gif
                 var newImage = $("<img>");
                 newImage.addClass("m-1 gifImage");
-                newImage.attr({"value": i, "src": gif, "status": "static"});
+                newImage.attr({"src": gif, "status": "static"});
                 // Generates a new div for each gif
                 var newDiv = $("<div>");
                 newDiv.addClass("col text-center m-2")
@@ -131,47 +132,71 @@ var gifTastic = {
     displayFavorites(){
         $(document).on("click", "#favorites", function(){
             $("#gifs").empty();
-            for(var i = 0; i < favorites.length; i ++){
-                // Generates each gif
-                var favoriteGif = $("<img>");
-                favoriteGif.addClass("m-1 gifImage");
-                favoriteGif.attr({"value": i, "src": favorites[i], "status": "static"});
-                $("#gifs").append(favoriteGif);
+            $("#youtube-player").empty();
+            if (localStorage.getItem("items")) {
+                favorites = JSON.parse(localStorage.getItem("items"));
+                for(var i = 0; i < favorites.length; i ++){
+                    // Generates each gif
+                    var favoriteGif = $("<img>");
+                    favoriteGif.addClass("m-2 gifImage");
+                    favoriteGif.attr({"src": favorites[i], "status": "static"});
+                    $("#gifs").append(favoriteGif);
+                }
+                if(firstFavoriteClick){
+                var clear = $("<button>");
+                clear.addClass("btn btn-outline-danger clearFavorites");
+                clear.text("Clear Favorites");
+                $("#gifs").after(clear);
+                firstFavoriteClick = false; 
+                }
+            } else {
+                favorites = [];
+                var message = $("<div class='col'>")
+                message.html("<h2>You don't have any favorites yet!</h2>")
+                $("#gifs").append(message);
             }
         })
     },
-    // // Uses YouTube DATA API to search for relevant YouTube Video
-    // searchYouTube(buttonName){
-    //     var that = this;
-    //     var newURL = "https://www.googleapis.com/youtube/v3/search?part=snippet&q=" + buttonName + "+MV&type=video&videoEmbeddable=true&key=AIzaSyBUf7sZOA7CfTMYvlNTCUvn-U05WYjbh1Y";
-    //     $.ajax({
-    //         url: newURL,
-    //         method: "GET"
-    //     }).then(function(result){
-    //         var vidId = result.items[0].id.videoId;
-    //         // Empties youtube player div to allow new video to be embedded
-    //         $("#youtube-player").empty();
-    //         $("#youtube-player").append("<div id='player'>");
-    //         // Embeds video using videoID from search API
-    //         that.onYouTubeIframeAPIReady(vidId);
-    //     })
-    // },
-    // // Using YouTube iFrame API to embed video into webpage
-    // onYouTubeIframeAPIReady(id) {
-    //     var that = this;
-    //     player = new YT.Player('player', {
-    //       height: '390',
-    //       width: '640',
-    //       videoId: id,
-    //       events: {
-    //         'onReady': that.onPlayerReady,
-    //       }
-    //     });
-    // },
-    // // Will play youtube video once the video is ready
-    // onPlayerReady(event) {
-    //     event.target.playVideo();
-    // },
+    clearFavorites(){
+        $(document).on("click", ".clearFavorites", function(){
+            $("#gifs").empty();
+            localStorage.clear();
+            $(this).remove();
+            firstFavoriteClick = true; 
+        })
+    },
+    // Uses YouTube DATA API to search for relevant YouTube Video
+    searchYouTube(buttonName){
+        var that = this;
+        var newURL = "https://www.googleapis.com/youtube/v3/search?part=snippet&q=" + buttonName + "+MV&type=video&videoEmbeddable=true&key=AIzaSyBUf7sZOA7CfTMYvlNTCUvn-U05WYjbh1Y";
+        $.ajax({
+            url: newURL,
+            method: "GET"
+        }).then(function(result){
+            var vidId = result.items[0].id.videoId;
+            // Empties youtube player div to allow new video to be embedded
+            $("#youtube-player").empty();
+            $("#youtube-player").append("<div id='player'>");
+            // Embeds video using videoID from search API
+            that.onYouTubeIframeAPIReady(vidId);
+        })
+    },
+    // Using YouTube iFrame API to embed video into webpage
+    onYouTubeIframeAPIReady(id) {
+        var that = this;
+        player = new YT.Player('player', {
+          height: '390',
+          width: '640',
+          videoId: id,
+          events: {
+            'onReady': that.onPlayerReady,
+          }
+        });
+    },
+    // Will play youtube video once the video is ready
+    onPlayerReady(event) {
+        event.target.playVideo();
+    },
 }
 
 $(document).ready(function(){
@@ -183,4 +208,5 @@ $(document).ready(function(){
     gifTastic.downloadImage();
     gifTastic.storeFavorites();
     gifTastic.displayFavorites();
+    gifTastic.clearFavorites();
 })

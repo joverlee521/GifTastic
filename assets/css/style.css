@@ -2,7 +2,7 @@ body {
     background-image: url(../images/darkness.png);
 }
 
-span {
+span, h2 {
     color: #ffffff;
 }
 
