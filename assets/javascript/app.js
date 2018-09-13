@@ -99,7 +99,8 @@ var gifTastic = {
     collectInput(){
         var that = this;
         // collects user's input once submit button was clicked
-        $("#submit").on("click", function(){
+        $("#submit").on("click", function(event){
+            event.preventDefault();
             var input = $("#search").val();
             $("#search").val("");
             // pushes input into the topics array
