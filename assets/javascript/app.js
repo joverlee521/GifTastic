@@ -1,3 +1,4 @@
+// Variable declarations
 var topics = ["BigBang", "Super Junior", "Girl's Generation", "TVXQ", "BTS", "MAMAMOO", "EXO", "BAP", "BLACKPINK", "SHINee", "EXID", "AOA", "f(x)", "MBLAQ", "BlockB", "Epik High"];
 var numberDisplayed = 10;
 var firstClick = true; 
@@ -43,6 +44,7 @@ var gifTastic = {
                 favorite.addClass("favoriteButton");
                 favorite.attr("href", gif);
                 favorite.html("<i class='fas fa-heart'></i>");
+                // Changes favorite button if corresponding gif has already been added to favorites
                 if(favorites.indexOf(favorite.attr("href")) >= 0){
                     favorite.css({"color": "#F6E848", "pointer-events": "none"});
                 }
@@ -76,7 +78,7 @@ var gifTastic = {
             }
             // Stores the text of the clicked button 
             lastClicked = $(this).text();
-            // Runs the generategifs method using the text of button clicked
+            // Runs the generategifs and searchYouTube method using the text of button clicked
             that.generateGifs(lastClicked);   
             that.searchYouTube(lastClicked);
         })
@@ -101,11 +103,11 @@ var gifTastic = {
         // collects user's input once submit button was clicked
         $("#submit").on("click", function(event){
             event.preventDefault();
+            // stores user's input
             var input = $("#search").val();
+            // empties search bar once input is entered
             $("#search").val("");
-            // pushes input into the topics array
             topics.push(input);
-            // empties buttons div so buttons aren't repeated
             $("#buttons").empty();
             // Creates the buttons again, this time including user's input
             that.createButtons();
@@ -129,12 +131,14 @@ var gifTastic = {
     },
     storeFavorites(){
         $(document).on("click", ".favoriteButton", function(){
+            // Stores favorite gifs in favorite array and localstorage
             favorites.push($(this).attr("href"));
             localStorage.setItem("items", JSON.stringify(favorites));
             $(this).css({"color": "#F6E848", "pointer-events": "none"});
         })
     },
     displayFavorites(){
+        // ensures favorites reflects what is stored in localstorage
         if(localStorage.getItem("items")){
             favorites = JSON.parse(localStorage.getItem("items"));
         }
@@ -146,12 +150,13 @@ var gifTastic = {
             $("#youtube-player").empty();
             if (favorites.length > 0){
                 for(var i = 0; i < favorites.length; i ++){
-                    // Generates each gif
+                    // Generates each favorite gif
                     var favoriteGif = $("<img>");
                     favoriteGif.addClass("m-2 gifImage");
                     favoriteGif.attr({"src": favorites[i], "status": "static"});
                     $("#gifs").append(favoriteGif);
                 }
+                // Ensures clear button is not created multiple tiems
                 if(firstFavoriteClick){
                 var clear = $("<button>");
                 clear.addClass("btn btn-outline-danger clearFavorites");
@@ -168,6 +173,7 @@ var gifTastic = {
         })
     },
     clearFavorites(){
+        // clears favorites and localstorage
         $(document).on("click", ".clearFavorites", function(){
             $("#gifs").empty();
             localStorage.clear();
@@ -176,7 +182,7 @@ var gifTastic = {
             firstFavoriteClick = true; 
         })
     },
-    // Uses YouTube DATA API to search for relevant YouTube Video
+    // Uses YouTube DATA API to search for relevant YouTube Videos
     searchYouTube(buttonName){
         var that = this;
         var newURL = "https://www.googleapis.com/youtube/v3/search?part=snippet&q=" + buttonName + "+MV&type=video&videoEmbeddable=true&key=AIzaSyBUf7sZOA7CfTMYvlNTCUvn-U05WYjbh1Y";
@@ -187,17 +193,19 @@ var gifTastic = {
             // Empties youtube player div to allow new video to be embedded
             $("#youtube-player").empty();
             if(result.items.length === 0){
+                // Displays when no videos are returned
                 $("#youtube-player").append("<h2>No Video Available</h2>");
             }
             else{
+                // Embeds video using videoID from search API
                 var vidId = result.items[0].id.videoId;
                 $("#youtube-player").append("<div id='player'>");
-                // Embeds video using videoID from search API
                 that.onYouTubeIframeAPIReady(vidId);
             }
         })
     },
     // Using YouTube iFrame API to embed video into webpage
+    // Copy/pasted from YouTube API documentation
     onYouTubeIframeAPIReady(id) {
         var that = this;
         player = new YT.Player('player', {
