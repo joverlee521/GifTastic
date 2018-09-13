@@ -71,7 +71,7 @@ var gifTastic = {
                 var moreButton = $("<button>");
                 moreButton.addClass("btn btn-outline-info addMoreGifs");
                 moreButton.text("Add 10 more GIFs");
-                $(".input-group").after(moreButton);
+                $("form").after(moreButton);
                 firstClick = false; 
             }
             // Stores the text of the clicked button 
