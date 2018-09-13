@@ -43,6 +43,9 @@ var gifTastic = {
                 favorite.addClass("favoriteButton");
                 favorite.attr("href", gif);
                 favorite.html("<i class='fas fa-heart'></i>");
+                if(favorites.indexOf(favorite.attr("href")) >= 0){
+                    favorite.css({"color": "#F6E848", "pointer-events": "none"});
+                }
                 // Generates each gif
                 var newImage = $("<img>");
                 newImage.addClass("m-1 gifImage");
@@ -127,14 +130,20 @@ var gifTastic = {
         $(document).on("click", ".favoriteButton", function(){
             favorites.push($(this).attr("href"));
             localStorage.setItem("items", JSON.stringify(favorites));
+            $(this).css({"color": "#F6E848", "pointer-events": "none"});
         })
     },
     displayFavorites(){
+        if(localStorage.getItem("items")){
+            favorites = JSON.parse(localStorage.getItem("items"));
+        }
+        else{
+            favorites = [];
+        }
         $(document).on("click", "#favorites", function(){
             $("#gifs").empty();
             $("#youtube-player").empty();
-            if (localStorage.getItem("items")) {
-                favorites = JSON.parse(localStorage.getItem("items"));
+            if (favorites.length > 0){
                 for(var i = 0; i < favorites.length; i ++){
                     // Generates each gif
                     var favoriteGif = $("<img>");
@@ -149,8 +158,8 @@ var gifTastic = {
                 $("#gifs").after(clear);
                 firstFavoriteClick = false; 
                 }
-            } else {
-                favorites = [];
+            } 
+            else {
                 var message = $("<div class='col'>")
                 message.html("<h2>You don't have any favorites yet!</h2>")
                 $("#gifs").append(message);
@@ -161,6 +170,7 @@ var gifTastic = {
         $(document).on("click", ".clearFavorites", function(){
             $("#gifs").empty();
             localStorage.clear();
+            favorites = [];
             $(this).remove();
             firstFavoriteClick = true; 
         })
@@ -173,7 +183,6 @@ var gifTastic = {
             url: newURL,
             method: "GET"
         }).then(function(result){
-            console.log(result);
             // Empties youtube player div to allow new video to be embedded
             $("#youtube-player").empty();
             if(result.items.length === 0){
