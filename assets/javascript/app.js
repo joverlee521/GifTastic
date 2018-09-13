@@ -3,6 +3,7 @@ var numberDisplayed = 10;
 var firstClick = true; 
 var lastClicked;
 var player; 
+var favorites = [];
 
 var gifTastic = {
     createButtons(){
@@ -36,6 +37,11 @@ var gifTastic = {
                 download.addClass("downloadButton");
                 download.attr("href", downloadLink);
                 download.html("<i class='fas fa-download'></i>");
+                // Generates favorite button
+                var favorite = $("<button>");
+                favorite.addClass("favoriteButton");
+                favorite.attr("href", gif);
+                favorite.html("<i class='fas fa-heart'></i>");
                 // Generates each gif
                 var newImage = $("<img>");
                 newImage.addClass("m-1 gifImage");
@@ -44,43 +50,11 @@ var gifTastic = {
                 var newDiv = $("<div>");
                 newDiv.addClass("col text-center m-2")
                 // Append everything to the new div 
-                newDiv.append(newImage, "<br>", download, "<span>&nbsp</span>", imageRating);
+                newDiv.append(newImage, "<br>", favorite, "<span>&nbsp</span>", imageRating, "<span>&nbsp</span>", download);
                 // Display new div in gifs div
                 $("#gifs").append(newDiv);
             }
         })
-    },
-    // Uses YouTube DATA API to search for relevant YouTube Video
-    searchYouTube(buttonName){
-        var that = this;
-        var newURL = "https://www.googleapis.com/youtube/v3/search?part=snippet&q=" + buttonName + "+MV&type=video&videoEmbeddable=true&key=AIzaSyBUf7sZOA7CfTMYvlNTCUvn-U05WYjbh1Y";
-        $.ajax({
-            url: newURL,
-            method: "GET"
-        }).then(function(result){
-            var vidId = result.items[0].id.videoId;
-            // Empties youtube player div to allow new video to be embedded
-            $("#youtube-player").empty();
-            $("#youtube-player").append("<div id='player'>");
-            // Embeds video using videoID from search API
-            that.onYouTubeIframeAPIReady(vidId);
-        })
-    },
-    // Using YouTube iFrame API to embed video into webpage
-    onYouTubeIframeAPIReady(id) {
-        var that = this;
-        player = new YT.Player('player', {
-          height: '390',
-          width: '640',
-          videoId: id,
-          events: {
-            'onReady': that.onPlayerReady,
-          }
-        });
-    },
-    // Will play youtube video once the video is ready
-    onPlayerReady(event) {
-        event.target.playVideo();
     },
     clickButton(){
         var that = this;
@@ -147,7 +121,57 @@ var gifTastic = {
         $(document).on("click", ".downloadButton", function(){
             download($(this).attr("href"));
         })
-    }
+    },
+    storeFavorites(){
+        $(document).on("click", ".favoriteButton", function(){
+            favorites.push($(this).attr("href"));
+            localStorage.setItem("items", JSON.stringify(favorites));
+        })
+    },
+    displayFavorites(){
+        $(document).on("click", "#favorites", function(){
+            $("#gifs").empty();
+            for(var i = 0; i < favorites.length; i ++){
+                // Generates each gif
+                var favoriteGif = $("<img>");
+                favoriteGif.addClass("m-1 gifImage");
+                favoriteGif.attr({"value": i, "src": favorites[i], "status": "static"});
+                $("#gifs").append(favoriteGif);
+            }
+        })
+    },
+    // // Uses YouTube DATA API to search for relevant YouTube Video
+    // searchYouTube(buttonName){
+    //     var that = this;
+    //     var newURL = "https://www.googleapis.com/youtube/v3/search?part=snippet&q=" + buttonName + "+MV&type=video&videoEmbeddable=true&key=AIzaSyBUf7sZOA7CfTMYvlNTCUvn-U05WYjbh1Y";
+    //     $.ajax({
+    //         url: newURL,
+    //         method: "GET"
+    //     }).then(function(result){
+    //         var vidId = result.items[0].id.videoId;
+    //         // Empties youtube player div to allow new video to be embedded
+    //         $("#youtube-player").empty();
+    //         $("#youtube-player").append("<div id='player'>");
+    //         // Embeds video using videoID from search API
+    //         that.onYouTubeIframeAPIReady(vidId);
+    //     })
+    // },
+    // // Using YouTube iFrame API to embed video into webpage
+    // onYouTubeIframeAPIReady(id) {
+    //     var that = this;
+    //     player = new YT.Player('player', {
+    //       height: '390',
+    //       width: '640',
+    //       videoId: id,
+    //       events: {
+    //         'onReady': that.onPlayerReady,
+    //       }
+    //     });
+    // },
+    // // Will play youtube video once the video is ready
+    // onPlayerReady(event) {
+    //     event.target.playVideo();
+    // },
 }
 
 $(document).ready(function(){
@@ -157,4 +181,6 @@ $(document).ready(function(){
     gifTastic.collectInput();
     gifTastic.addMoreGifs();
     gifTastic.downloadImage();
+    gifTastic.storeFavorites();
+    gifTastic.displayFavorites();
 })

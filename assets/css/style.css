@@ -13,13 +13,13 @@ span {
     padding: 1rem 0 0 0;
 }
 
-.downloadButton {
+.downloadButton, .favoriteButton {
     background-color: transparent;
     color: #00A4BC;
     border-color: transparent;
 }
 
-.downloadButton:hover {
+.downloadButton:hover , .favoriteButton:hover {
     cursor: pointer; 
     background-color: #ffffff;
     color: #000000; 
