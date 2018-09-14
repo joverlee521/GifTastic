@@ -148,6 +148,7 @@ var gifTastic = {
         $(document).on("click", "#favorites", function(){
             $("#gifs").empty();
             $("#youtube-player").empty();
+            $("#youtube-player").removeClass("video-container");
             if (favorites.length > 0){
                 for(var i = 0; i < favorites.length; i ++){
                     // Generates each favorite gif
@@ -192,6 +193,7 @@ var gifTastic = {
         }).then(function(result){
             // Empties youtube player div to allow new video to be embedded
             $("#youtube-player").empty();
+            $("#youtube-player").addClass("video-container");
             if(result.items.length === 0){
                 // Displays when no videos are returned
                 $("#youtube-player").append("<h2>No Video Available</h2>");

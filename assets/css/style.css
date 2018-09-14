@@ -34,7 +34,7 @@ span, h2 {
     border: 1px solid #ffffff;
 }
 
-#youtube-player {
+.video-container {
     position: relative;
     padding-bottom: 56.25%;
     padding-top: 35px;
