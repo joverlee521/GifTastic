@@ -159,7 +159,7 @@ var gifTastic = {
                 // Ensures clear button is not created multiple tiems
                 if(firstFavoriteClick){
                 var clear = $("<button>");
-                clear.addClass("btn btn-outline-danger clearFavorites");
+                clear.addClass("btn btn-outline-danger mb-2 clearFavorites");
                 clear.text("Clear Favorites");
                 $("#gifs").after(clear);
                 firstFavoriteClick = false; 
