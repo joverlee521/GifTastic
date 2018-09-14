@@ -37,15 +37,15 @@ var gifTastic = {
                 // Generates a download button for each gif
                 var download = $("<button>");
                 download.addClass("downloadButton");
-                download.attr("href", downloadLink);
+                download.attr("data-link", downloadLink);
                 download.html("<i class='fas fa-download'></i>");
                 // Generates favorite button
                 var favorite = $("<button>");
                 favorite.addClass("favoriteButton");
-                favorite.attr("href", gif);
+                favorite.attr("data-link", gif);
                 favorite.html("<i class='fas fa-heart'></i>");
                 // Changes favorite button if corresponding gif has already been added to favorites
-                if(favorites.indexOf(favorite.attr("href")) >= 0){
+                if(favorites.indexOf(favorite.attr("data-link")) >= 0){
                     favorite.css({"color": "#F6E848", "pointer-events": "none"});
                 }
                 // Generates each gif
@@ -54,7 +54,7 @@ var gifTastic = {
                 newImage.attr({"src": gif, "status": "static"});
                 // Generates a new div for each gif
                 var newDiv = $("<div>");
-                newDiv.addClass("col text-center m-2")
+                newDiv.addClass("col-12 col-sm text-center m-2")
                 // Append everything to the new div 
                 newDiv.append(newImage, "<br>", favorite, "<span>&nbsp</span>", imageRating, "<span>&nbsp</span>", download);
                 // Display new div in gifs div
@@ -126,13 +126,13 @@ var gifTastic = {
         // One click download of gif using download.js plugin 
         // Would have liked to use the download attribute in HTML5, but does not work with cross-origin files
         $(document).on("click", ".downloadButton", function(){
-            download($(this).attr("href"));
+            download($(this).attr("data-link"));
         })
     },
     storeFavorites(){
         $(document).on("click", ".favoriteButton", function(){
             // Stores favorite gifs in favorite array and localstorage
-            favorites.push($(this).attr("href"));
+            favorites.push($(this).attr("data-link"));
             localStorage.setItem("items", JSON.stringify(favorites));
             $(this).css({"color": "#F6E848", "pointer-events": "none"});
         })

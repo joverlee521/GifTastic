@@ -34,10 +34,6 @@ span, h2 {
     border: 1px solid #ffffff;
 }
 
-#gifs {
-    overflow: hidden;
-}
-
 #youtube-player {
     position: relative;
     padding-bottom: 56.25%;
