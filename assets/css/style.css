@@ -33,3 +33,21 @@ span, h2 {
     cursor: pointer;
     border: 1px solid #ffffff;
 }
+
+
+#youtube-player {
+    position: relative;
+    padding-bottom: 56.25%;
+    padding-top: 35px;
+    height: 0;
+    overflow: hidden;
+}
+
+#player {
+    position: absolute;
+    top:0;
+    left: 0;
+    width: 100%;
+    height: 100%;  
+}
+    
