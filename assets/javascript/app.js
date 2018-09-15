@@ -149,6 +149,8 @@ var gifTastic = {
             $("#gifs").empty();
             $("#youtube-player").empty();
             $("#youtube-player").removeClass("video-container");
+            $(".addMoreGifs").remove();
+            firstClick = true; 
             if (favorites.length > 0){
                 for(var i = 0; i < favorites.length; i ++){
                     // Generates each favorite gif
