@@ -68,6 +68,8 @@ var gifTastic = {
         $(document).on("click", ".gifButtons", function(){
             // Default number of gifs displayed is 10
             numberDisplayed = 10;
+            $(".clearFavorites").remove();
+            firstFavoriteClick = true;
             // On the first click of the page, the add more gifs button is generated
             if(firstClick){
                 var moreButton = $("<button>");
