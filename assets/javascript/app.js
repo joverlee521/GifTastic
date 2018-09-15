@@ -107,12 +107,17 @@ var gifTastic = {
             event.preventDefault();
             // stores user's input
             var input = $("#search").val();
-            // empties search bar once input is entered
-            $("#search").val("");
-            topics.push(input);
-            $("#buttons").empty();
-            // Creates the buttons again, this time including user's input
-            that.createButtons();
+            if(input === ""){
+                return;
+            }
+            else{
+                // empties search bar once input is entered
+                $("#search").val("");
+                topics.push(input);
+                $("#buttons").empty();
+                // Creates the buttons again, this time including user's input
+                that.createButtons();
+            }
         });
     },
     addMoreGifs(){
