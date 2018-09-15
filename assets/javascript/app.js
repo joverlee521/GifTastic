@@ -133,14 +133,14 @@ var gifTastic = {
         $(document).on("click", ".favoriteButton", function(){
             // Stores favorite gifs in favorite array and localstorage
             favorites.push($(this).attr("data-link"));
-            localStorage.setItem("items", JSON.stringify(favorites));
+            localStorage.setItem("gifs", JSON.stringify(favorites));
             $(this).css({"color": "#F6E848", "pointer-events": "none"});
         })
     },
     displayFavorites(){
         // ensures favorites reflects what is stored in localstorage
-        if(localStorage.getItem("items")){
-            favorites = JSON.parse(localStorage.getItem("items"));
+        if(localStorage.getItem("gifs")){
+            favorites = JSON.parse(localStorage.getItem("gifs"));
         }
         else{
             favorites = [];
@@ -179,7 +179,7 @@ var gifTastic = {
         // clears favorites and localstorage
         $(document).on("click", ".clearFavorites", function(){
             $("#gifs").empty();
-            localStorage.clear();
+            localStorage.removeItem("gifs");
             favorites = [];
             $(this).remove();
             firstFavoriteClick = true; 
