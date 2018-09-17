@@ -1,5 +1,5 @@
 // Variable declarations
-var topics = ["BigBang", "Super Junior", "Girl's Generation", "TVXQ", "BTS", "MAMAMOO", "EXO", "BAP", "BLACKPINK", "SHINee", "EXID", "AOA", "f(x)", "MBLAQ", "BlockB", "Epik High"];
+var topics = ["BigBang", "Super Junior", "Girl's Generation", "TVXQ", "MAMAMOO", "EXO", "BAP", "BLACKPINK", "SHINee", "EXID", "AOA", "f(x)", "MBLAQ", "BlockB", "Epik High"];
 var numberDisplayed = 10;
 var firstClick = true; 
 var lastClicked;
@@ -68,6 +68,7 @@ var gifTastic = {
         $(document).on("click", ".gifButtons", function(){
             // Default number of gifs displayed is 10
             numberDisplayed = 10;
+            // Remove clearFavorites button
             $(".clearFavorites").remove();
             firstFavoriteClick = true;
             // On the first click of the page, the add more gifs button is generated
@@ -107,6 +108,7 @@ var gifTastic = {
             event.preventDefault();
             // stores user's input
             var input = $("#search").val();
+            // Does not allow empty inputs
             if(input === ""){
                 return;
             }
@@ -141,6 +143,7 @@ var gifTastic = {
             // Stores favorite gifs in favorite array and localstorage
             favorites.push($(this).attr("data-link"));
             localStorage.setItem("gifs", JSON.stringify(favorites));
+            // Changes and disables clicked favoriteButton
             $(this).css({"color": "#F6E848", "pointer-events": "none"});
         })
     },
@@ -153,11 +156,13 @@ var gifTastic = {
             favorites = [];
         }
         $(document).on("click", "#favorites", function(){
+            // Empty containers so favorites can be displayed
             $("#gifs").empty();
             $("#youtube-player").empty();
             $("#youtube-player").removeClass("video-container");
             $(".addMoreGifs").remove();
             firstClick = true; 
+            // Display favorites if user has favorited gifs
             if (favorites.length > 0){
                 for(var i = 0; i < favorites.length; i ++){
                     // Generates each favorite gif
@@ -175,6 +180,7 @@ var gifTastic = {
                 firstFavoriteClick = false; 
                 }
             } 
+            // Display empty message if no favorites yet
             else {
                 var message = $("<div class='col'>")
                 message.html("<h2>You don't have any favorites yet!</h2>")
@@ -195,7 +201,7 @@ var gifTastic = {
     // Uses YouTube DATA API to search for relevant YouTube Videos
     searchYouTube(buttonName){
         var that = this;
-        var newURL = "https://www.googleapis.com/youtube/v3/search?part=snippet&q=" + buttonName + "+MV&type=video&videoEmbeddable=true&key=AIzaSyBUf7sZOA7CfTMYvlNTCUvn-U05WYjbh1Y";
+        var newURL = "https://www.googleapis.com/youtube/v3/search?part=snippet&q=" + buttonName + "+MV&type=video&videoEmbeddable=true&videoLicense=youtube&videoSyndicated=true&key=AIzaSyBUf7sZOA7CfTMYvlNTCUvn-U05WYjbh1Y";
         $.ajax({
             url: newURL,
             method: "GET"
@@ -216,7 +222,7 @@ var gifTastic = {
         })
     },
     // Using YouTube iFrame API to embed video into webpage
-    // Copy/pasted from YouTube API documentation
+    // Copy & pasted from YouTube API documentation
     onYouTubeIframeAPIReady(id) {
         var that = this;
         player = new YT.Player('player', {
