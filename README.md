@@ -8,3 +8,4 @@ Dynamic Webpage that uses GIPHY and YouTube APIs
 * Download GIFs by clicking on  ![download icon](https://github.com/joverlee521/GifTastic/blob/master/assets/images/downloadIcon.png)
 * Add GIF to favorites by clicking on ![favorite icon](https://github.com/joverlee521/GifTastic/blob/master/assets/images/favoriteIcon.png)
 * View favorited GIFs by clicking on "Favorites" button
+* Favorites can be sorted by dragging the GIFs around the page
