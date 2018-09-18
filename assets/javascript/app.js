@@ -156,20 +156,25 @@ var gifTastic = {
             favorites = [];
         }
         $(document).on("click", "#favorites", function(){
+        
             // Empty containers so favorites can be displayed
             $("#gifs").empty();
+            $("#sortable").empty();
             $("#youtube-player").empty();
             $("#youtube-player").removeClass("video-container");
             $(".addMoreGifs").remove();
             firstClick = true; 
             // Display favorites if user has favorited gifs
             if (favorites.length > 0){
+                var fyi = $("<div class='col'>");
+                fyi.html("<h4>FYI: You can sort your favorite GIFs by dragging them around!</h4>");
+                $("#gifs").append(fyi);
                 for(var i = 0; i < favorites.length; i ++){
                     // Generates each favorite gif
                     var favoriteGif = $("<img>");
                     favoriteGif.addClass("m-2 gifImage");
-                    favoriteGif.attr({"src": favorites[i], "status": "static"});
-                    $("#gifs").append(favoriteGif);
+                    favoriteGif.attr({"src": favorites[i], "status": "static", "id": favorites[i] });
+                    $("#sortable").append(favoriteGif);
                 }
                 // Ensures clear button is not created multiple tiems
                 if(firstFavoriteClick){
@@ -192,11 +197,31 @@ var gifTastic = {
         // clears favorites and localstorage
         $(document).on("click", ".clearFavorites", function(){
             $("#gifs").empty();
+            $("#sortable").empty();
             localStorage.removeItem("gifs");
             favorites = [];
             $(this).remove();
             firstFavoriteClick = true; 
         })
+    },
+    // enabled sorting of favorite GIFs using jQuery UI
+    sortFavorites(){
+        $("#sortable").sortable({
+            helper: "clone",
+            opacity: 0.7   
+        });
+        // Updates localstorage and favorites array once sort has been updated
+        $( "#sortable" ).on("sortupdate",function( event, ui ) {
+            // sorts ids of gifs into a string
+            var sorted = $( this ).sortable( "serialize");
+            // reconstitute the url 
+            var newSorted = sorted.replace(/\[]=/g, "_");
+            // change string into an array
+            var sortedArray = newSorted.split("&");
+            // store sortedArray into localStorage
+            localStorage.setItem("gifs", JSON.stringify(sortedArray)) ;
+            favorites = JSON.parse(localStorage.getItem("gifs"));   
+      });
     },
     // Uses YouTube DATA API to search for relevant YouTube Videos
     searchYouTube(buttonName){
@@ -250,4 +275,5 @@ $(document).ready(function(){
     gifTastic.storeFavorites();
     gifTastic.displayFavorites();
     gifTastic.clearFavorites();
+    gifTastic.sortFavorites();
 })
