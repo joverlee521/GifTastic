@@ -156,8 +156,10 @@ var gifTastic = {
             favorites = [];
         }
         $(document).on("click", "#favorites", function(){
+        
             // Empty containers so favorites can be displayed
             $("#gifs").empty();
+            $("#sortable").empty();
             $("#youtube-player").empty();
             $("#youtube-player").removeClass("video-container");
             $(".addMoreGifs").remove();
@@ -168,8 +170,8 @@ var gifTastic = {
                     // Generates each favorite gif
                     var favoriteGif = $("<img>");
                     favoriteGif.addClass("m-2 gifImage");
-                    favoriteGif.attr({"src": favorites[i], "status": "static"});
-                    $("#gifs").append(favoriteGif);
+                    favoriteGif.attr({"src": favorites[i], "status": "static", "id": favorites[i] });
+                    $("#sortable").append(favoriteGif);
                 }
                 // Ensures clear button is not created multiple tiems
                 if(firstFavoriteClick){
@@ -192,12 +194,28 @@ var gifTastic = {
         // clears favorites and localstorage
         $(document).on("click", ".clearFavorites", function(){
             $("#gifs").empty();
+            $("#sortable").empty();
             localStorage.removeItem("gifs");
             favorites = [];
             $(this).remove();
             firstFavoriteClick = true; 
         })
     },
+    sortFavorites(){
+        $("#sortable").sortable({
+            helper: "clone",
+            opacity: 0.7   
+        });
+        $( "#sortable" ).on("sortupdate",function( event, ui ) {
+            var sorted = $( this ).sortable( "serialize");
+            var newSorted = sorted.replace(/\[]=/g, "_");
+            var sortedArray = newSorted.split("&");
+            localStorage.setItem("gifs", JSON.stringify(sortedArray)) ;
+            favorites = JSON.parse(localStorage.getItem("gifs"));   
+      });
+      
+    },
+
     // Uses YouTube DATA API to search for relevant YouTube Videos
     searchYouTube(buttonName){
         var that = this;
@@ -250,4 +268,5 @@ $(document).ready(function(){
     gifTastic.storeFavorites();
     gifTastic.displayFavorites();
     gifTastic.clearFavorites();
+    gifTastic.sortFavorites();
 })
