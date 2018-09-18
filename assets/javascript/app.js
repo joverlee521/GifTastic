@@ -173,7 +173,7 @@ var gifTastic = {
                     // Generates each favorite gif
                     var favoriteGif = $("<img>");
                     favoriteGif.addClass("m-2 gifImage");
-                    favoriteGif.attr({"src": favorites[i], "status": "static", "id": favorites[i] });
+                    favoriteGif.attr({"src": favorites[i], "status": "static"});
                     $("#sortable").append(favoriteGif);
                 }
                 // Ensures clear button is not created multiple tiems
@@ -213,7 +213,7 @@ var gifTastic = {
         // Updates localstorage and favorites array once sort has been updated
         $( "#sortable" ).on("sortupdate",function( event, ui ) {
             // sorts ids of gifs into a string
-            var sorted = $( this ).sortable( "serialize");
+            var sorted = $( this ).sortable( "serialize", {attribute: "src"});
             // reconstitute the url 
             var newSorted = sorted.replace(/\[]=/g, "_");
             // change string into an array
