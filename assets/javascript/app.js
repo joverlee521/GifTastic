@@ -110,6 +110,21 @@ var gifTastic = {
             var input = $("#search").val();
             // Does not allow empty inputs
             if(input === ""){
+                $("#search").popover({
+                    content: "Please enter something into the search bar",
+                    placement: "top"
+                })
+                $("#search").popover("show");
+                setTimeout(function(){$("#search").popover("dispose")}, 1500);
+                return;
+            }
+            else if(topics.indexOf(input) >= 0){
+                $("#search").popover({
+                    content: "This was already searched!",
+                    placement: "top"
+                })
+                $("#search").popover("show");
+                setTimeout(function(){$("#search").popover("dispose")}, 1500);
                 return;
             }
             else{
