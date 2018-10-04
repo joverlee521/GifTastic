@@ -1,5 +1,5 @@
-# GifTastic
-[Dynamic Webpage built with GIPHY and YouTube APIs](https://joverlee521.github.io/GifTastic/)
+# [GifTastic](https://joverlee521.github.io/GifTastic/)
+Dynamic Webpage built with GIPHY and YouTube APIs
 
 ### How To
 * Click on the buttons to display a corresponding YouTube video and related GIFs
