@@ -1,5 +1,5 @@
 # GifTastic
-Dynamic Webpage that uses GIPHY and YouTube APIs
+Dynamic Webpage built with GIPHY and YouTube APIs
 
 ### How To
 * Click on the buttons to display a corresponding YouTube video and related GIFs
