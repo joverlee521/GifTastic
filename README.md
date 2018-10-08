@@ -1,5 +1,7 @@
 # [GifTastic](https://joverlee521.github.io/GifTastic/)
-Dynamic Webpage built with GIPHY and YouTube APIs
+
+### About GifTastic
+GifTastic is a K-POP themed dynamic webpage that utilizes GIPHY and YouTube APIs. It is meant to be used as a visual and auditory introduction to K-POP groups. 
 
 ### How To
 * Click on the buttons to display a corresponding YouTube video and related GIFs
