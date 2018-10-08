@@ -9,7 +9,7 @@ var firstFavoriteClick = true;
 
 var gifTastic = {
     createButtons(){
-        // Generates button for each index of the topics array
+        // Dynamically creates a button for each index of the topics array
         for(var i = 0; i < topics.length; i++){
             var newButton = $("<button>");
             newButton.addClass("btn btn-outline-info m-1 gifButtons");
@@ -19,7 +19,7 @@ var gifTastic = {
     },
     // Uses GIPHY API to generate gifs 
     generateGifs(buttonName){
-        // Generates appropriate URL for AJAX 
+        // Incorporates the button name and number of gifs to display in the URL for AJAX call
         var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + buttonName + "+KPOP&api_key=10dpuSkxshqdLim7xp7FyDbgQPlJC3Vc&limit=" + numberDisplayed;
         $.ajax({
             url: queryURL,
@@ -29,19 +29,18 @@ var gifTastic = {
             $("#gifs").empty();
             // Generates a gif for all data returned from API
             for(var i = 0; i < result.data.length; i++){
+                // Grabs the gif url and download url
                 var gif = result.data[i].images.fixed_height_still.url;
                 var downloadLink = result.data[i].images.original.url;
                 // Generates a rating for each gif
                 var rating = result.data[i].rating.toUpperCase();
                 var imageRating = $("<span>").text("Rating: " + rating);
                 // Generates a download button for each gif
-                var download = $("<button>");
-                download.addClass("downloadButton");
+                var download = $("<button class='downloadButton'>");
                 download.attr("data-link", downloadLink);
                 download.html("<i class='fas fa-download'></i>");
                 // Generates favorite button
-                var favorite = $("<button>");
-                favorite.addClass("favoriteButton");
+                var favorite = $("<button class='favoriteButton'>");
                 favorite.attr("data-link", gif);
                 favorite.html("<i class='fas fa-heart'></i>");
                 // Changes favorite button if corresponding gif has already been added to favorites
@@ -70,6 +69,7 @@ var gifTastic = {
             numberDisplayed = 10;
             // Remove clearFavorites button
             $(".clearFavorites").remove();
+            // Flag that allows clearFavorites button to be generated again
             firstFavoriteClick = true;
             // On the first click of the page, the add more gifs button is generated
             if(firstClick){
@@ -118,6 +118,7 @@ var gifTastic = {
                 setTimeout(function(){$("#search").popover("dispose")}, 1500);
                 return;
             }
+            // Does not allow double entries
             else if(topics.indexOf(input) >= 0){
                 $("#search").popover({
                     content: "This was already searched!",
@@ -181,6 +182,7 @@ var gifTastic = {
             firstClick = true; 
             // Display favorites if user has favorited gifs
             if (favorites.length > 0){
+                // Displays FYI message
                 var fyi = $("<div class='col'>");
                 fyi.html("<h4>FYI: You can sort your favorite GIFs by dragging them around!</h4>");
                 $("#gifs").append(fyi);
